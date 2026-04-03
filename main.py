@@ -38,10 +38,14 @@ ball_sprite = transform.scale(image.load('ball.png'), (40,40))
 raketka1 = Player(raketka_sprite, 20, 100, 8)
 raketka2 = Player(raketka_sprite, 550, 100, 8)
 
-ball = GameSprite(ball_sprite, 300, 250, 10)
+ball = GameSprite(ball_sprite, 200, 250, 10)
 
 clock = time.Clock()
 
+
+ball_speed_x = 3
+ball_speed_y = 3
+    
 game = True
 while game:
     win.blit(bg, (0,0))
@@ -52,8 +56,24 @@ while game:
     raketka2.update_right()
     raketka2.reset()
     
+
+    if ball.rect.y < 0 or ball.rect.y > 450:
+        ball_speed_y *= -1
+   
+   
+    if sprite.collide_rect(ball, raketka1):
+        ball_speed_x *= -1
+        
+    if sprite.collide_rect(ball, raketka2):
+        ball_speed_x *= -1
+        
     ball.reset()
     
+
+    ball.rect.x += ball_speed_x
+    ball.rect.y += ball_speed_y
+    
+        
     for e in event.get():
         if e.type == QUIT:
             game = False
