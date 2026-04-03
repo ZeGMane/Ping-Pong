@@ -45,39 +45,56 @@ clock = time.Clock()
 
 ball_speed_x = 3
 ball_speed_y = 3
+
+font.init()
+font1 = font.Font(None, 70)
+
+lose1 = font1.render("1 PLAYER LOSE!", True, (255, 0, 0))
+lose2 = font1.render("2 PLAYER LOSE!", True, (255, 0, 0))
     
 game = True
+finish = False
 while game:
     win.blit(bg, (0,0))
     
-    raketka1.update_left()
-    raketka1.reset()
+    if not finish:
     
-    raketka2.update_right()
-    raketka2.reset()
-    
-
-    if ball.rect.y < 0 or ball.rect.y > 450:
-        ball_speed_y *= -1
-   
-   
-    if sprite.collide_rect(ball, raketka1):
-        ball_speed_x *= -1
+        raketka1.update_left()
+        raketka1.reset()
         
-    if sprite.collide_rect(ball, raketka2):
-        ball_speed_x *= -1
+        raketka2.update_right()
+        raketka2.reset()
         
-    ball.reset()
-    
 
-    ball.rect.x += ball_speed_x
-    ball.rect.y += ball_speed_y
+        if ball.rect.y < 0 or ball.rect.y > 450:
+            ball_speed_y *= -1
     
+    
+        if sprite.collide_rect(ball, raketka1):
+            ball_speed_x *= -1
+            
+        if sprite.collide_rect(ball, raketka2):
+            ball_speed_x *= -1
+            
+        ball.reset()
+        
+        if ball.rect.x <= 0:
+            win.blit(lose1, (100,250))
+            finish = True
+        
+        if ball.rect.x >= 550:
+            win.blit(lose2, (100,250))
+            finish = True
+        
+
+        ball.rect.x += ball_speed_x
+        ball.rect.y += ball_speed_y
+        display.update()
         
     for e in event.get():
         if e.type == QUIT:
             game = False
             
     clock.tick(60)
-    display.update()
+    
             
